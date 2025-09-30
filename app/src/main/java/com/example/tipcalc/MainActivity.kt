@@ -23,6 +23,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tipcalc.ui.theme.TipCalcTheme
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.Slider
 import androidx.compose.ui.Alignment
 
 class MainActivity : ComponentActivity() {
@@ -45,6 +47,8 @@ class MainActivity : ComponentActivity() {
 fun Greeting(name: String, modifier: Modifier = Modifier) {
     var orderAmount by remember { mutableStateOf("") }
     var dishCount by remember { mutableStateOf("") }
+    var tipPercentage by remember { mutableStateOf(0f) }
+
     Column(
         modifier = modifier.padding(16.dp)
     ) {
@@ -79,7 +83,6 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
                 fontSize = 18.sp,
                 modifier = Modifier.weight(1f)
             )
-
             OutlinedTextField(
                 value = dishCount,
                 onValueChange = { newValue -> dishCount = newValue },
@@ -93,6 +96,24 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
             )
         }
+        Text(
+            text = "Чаевые:",
+            fontSize = 18.sp,
+            modifier = Modifier.padding(bottom = 8.dp)
+        )
+        Slider(
+            value = tipPercentage,
+            onValueChange = { newValue -> tipPercentage = newValue },
+            valueRange = 0f..25f,
+            steps = 24,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 16.dp)
+        )
+        Text(
+            text = "Процент чаевых: ${tipPercentage.toInt()}%",
+            fontSize = 16.sp
+        )
     }
 }
 
