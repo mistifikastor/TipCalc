@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -24,6 +25,7 @@ import androidx.compose.ui.unit.sp
 import com.example.tipcalc.ui.theme.TipCalcTheme
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Slider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.text.style.TextAlign
@@ -133,6 +135,62 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
                 modifier = Modifier.weight(1f),
                 textAlign = TextAlign.End
             )
+        }
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(bottom = 16.dp)
+        ) {
+            Text(
+                text = "Скидка:",
+                fontSize = 18.sp,
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
+            val discountPercentage = remember(dishCount) {
+                when {
+                    dishCount.isEmpty() -> 0
+                    dishCount.toIntOrNull() == null -> 0
+                    dishCount.toInt() in 1..2 -> 3
+                    dishCount.toInt() in 3..5 -> 5
+                    dishCount.toInt() in 6..10 -> 7
+                    dishCount.toInt() > 10 -> 10
+                    else -> 0
+                }
+            }
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 16.dp)
+            ) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    RadioButton(
+                        selected = discountPercentage == 3,
+                        onClick = {}
+                    )
+                    Text(text = "3%")
+                }
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    RadioButton(
+                        selected = discountPercentage == 5,
+                        onClick = {}
+                    )
+                    Text(text = "5%")
+                }
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    RadioButton(
+                        selected = discountPercentage == 7,
+                        onClick = {}
+                    )
+                    Text(text = "7%")
+                }
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    RadioButton(
+                        selected = discountPercentage == 10,
+                        onClick = {}
+                    )
+                    Text(text = "10%")
+                }
+            }
         }
     }
 }
