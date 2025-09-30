@@ -26,6 +26,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Slider
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.text.style.TextAlign
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -96,11 +97,13 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
             )
         }
+        // Чаевые
         Text(
             text = "Чаевые:",
             fontSize = 18.sp,
             modifier = Modifier.padding(bottom = 8.dp)
         )
+
         Slider(
             value = tipPercentage,
             onValueChange = { newValue -> tipPercentage = newValue },
@@ -108,12 +111,31 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
             steps = 24,
             modifier = Modifier
                 .fillMaxWidth()
+                .padding(bottom = 8.dp)
+        )
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
                 .padding(bottom = 16.dp)
-        )
-        Text(
-            text = "Процент чаевых: ${tipPercentage.toInt()}%",
-            fontSize = 16.sp
-        )
+        ) {
+            Text(
+                text = "0%",
+                fontSize = 14.sp,
+                modifier = Modifier.weight(1f)
+            )
+
+            Text(
+                text = "Текущий процент: ${tipPercentage.toInt()}%",
+                fontSize = 14.sp
+            )
+
+            Text(
+                text = "25%",
+                fontSize = 14.sp,
+                modifier = Modifier.weight(1f),
+                textAlign = TextAlign.End
+            )
+        }
     }
 }
 
