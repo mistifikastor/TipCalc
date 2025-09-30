@@ -51,6 +51,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
     var orderAmount by remember { mutableStateOf("") }
     var dishCount by remember { mutableStateOf("") }
     var tipPercentage by remember { mutableStateOf(0f) }
+
     Column(
         modifier = modifier.padding(16.dp)
     ) {
@@ -76,6 +77,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
             )
         }
+
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.padding(bottom = 16.dp)
@@ -98,6 +100,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
             )
         }
+
         Text(
             text = "Чаевые:",
             fontSize = 18.sp,
@@ -113,6 +116,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
                 .fillMaxWidth()
                 .padding(bottom = 8.dp)
         )
+
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -123,12 +127,10 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
                 fontSize = 14.sp,
                 modifier = Modifier.weight(1f)
             )
-
-            Text(
-                text = "Текущий процент: ${tipPercentage.toInt()}%",
-                fontSize = 14.sp
-            )
-
+//            Text(
+//                text = "Текущий процент: ${tipPercentage.toInt()}%",
+//                fontSize = 14.sp
+//            )
             Text(
                 text = "25%",
                 fontSize = 14.sp,
@@ -136,61 +138,82 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
                 textAlign = TextAlign.End
             )
         }
+
+        Text(
+            text = "Скидка:",
+            fontSize = 18.sp,
+            modifier = Modifier.padding(bottom = 8.dp)
+        )
+
+        val discountPercentage = remember(dishCount) {
+            when {
+                dishCount.isEmpty() -> 0
+                dishCount.toIntOrNull() == null -> 0
+                dishCount.toInt() in 1..2 -> 3
+                dishCount.toInt() in 3..5 -> 5
+                dishCount.toInt() in 6..10 -> 7
+                dishCount.toInt() > 10 -> 10
+                else -> 0
+            }
+        }
+
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 16.dp)
+        ) {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                RadioButton(
+                    selected = discountPercentage == 3,
+                    onClick = {}
+                )
+                Text(text = "3%")
+            }
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                RadioButton(
+                    selected = discountPercentage == 5,
+                    onClick = {}
+                )
+                Text(text = "5%")
+            }
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                RadioButton(
+                    selected = discountPercentage == 7,
+                    onClick = {}
+                )
+                Text(text = "7%")
+            }
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                RadioButton(
+                    selected = discountPercentage == 10,
+                    onClick = {}
+                )
+                Text(text = "10%")
+            }
+        }
+        val totalAmount = remember(orderAmount, tipPercentage, discountPercentage) {
+            val amount = orderAmount.toDoubleOrNull() ?: 0.0
+            val discountValue = amount * discountPercentage / 100
+            val tipValue = amount * tipPercentage.toDouble() / 100
+            val result = amount - discountValue + tipValue
+            result
+        }
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(bottom = 16.dp)
+            modifier = Modifier.padding(top = 16.dp)
         ) {
             Text(
-                text = "Скидка:",
+                text = "Итоговая сумма:",
                 fontSize = 18.sp,
-                modifier = Modifier.padding(bottom = 8.dp)
+                modifier = Modifier.weight(1f)
             )
-            val discountPercentage = remember(dishCount) {
-                when {
-                    dishCount.isEmpty() -> 0
-                    dishCount.toIntOrNull() == null -> 0
-                    dishCount.toInt() in 1..2 -> 3
-                    dishCount.toInt() in 3..5 -> 5
-                    dishCount.toInt() in 6..10 -> 7
-                    dishCount.toInt() > 10 -> 10
-                    else -> 0
-                }
-            }
-            Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 16.dp)
-            ) {
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    RadioButton(
-                        selected = discountPercentage == 3,
-                        onClick = {}
-                    )
-                    Text(text = "3%")
-                }
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    RadioButton(
-                        selected = discountPercentage == 5,
-                        onClick = {}
-                    )
-                    Text(text = "5%")
-                }
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    RadioButton(
-                        selected = discountPercentage == 7,
-                        onClick = {}
-                    )
-                    Text(text = "7%")
-                }
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    RadioButton(
-                        selected = discountPercentage == 10,
-                        onClick = {}
-                    )
-                    Text(text = "10%")
-                }
-            }
+            Text(
+                text = "%.2f".format(totalAmount),
+                fontSize = 18.sp,
+                modifier = Modifier.weight(1f),
+                textAlign = TextAlign.End
+            )
         }
     }
 }
