@@ -49,7 +49,6 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
     var orderAmount by remember { mutableStateOf("") }
     var dishCount by remember { mutableStateOf("") }
     var tipPercentage by remember { mutableStateOf(0f) }
-
     Column(
         modifier = modifier.padding(16.dp)
     ) {
@@ -97,7 +96,6 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
             )
         }
-        // Чаевые
         Text(
             text = "Чаевые:",
             fontSize = 18.sp,
